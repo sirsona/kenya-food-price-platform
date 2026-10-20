@@ -1,0 +1,29 @@
+# Canonical product catalogue for the M1 star schema.
+# Aliases are matched case-insensitively after trimming whitespace.
+products:
+  - canonical_name: Maize (white)
+    category: cereals
+    default_unit: kg
+    is_food: true
+    aliases:
+      - maize_fao
+      - Maize
+      - Maize (white)
+      - Maize (white, dry)
+
+  - canonical_name: Beans (dry)
+    category: pulses
+    default_unit: kg
+    is_food: true
+    aliases:
+      - beans
+      - Beans
+      - Beans (dry)
+
+  - canonical_name: Goat (live)
+    category: meat
+    default_unit: unit
+    is_food: true
+    aliases:
+      - livestock_goat_s_fao
+      - Goat (live)

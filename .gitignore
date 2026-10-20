@@ -1,0 +1,25 @@
+# Local environment and generated data
+.venv/
+.env
+.env.*
+!.env.example
+data/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Airflow
+airflow/logs/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,88 @@
+# Source contracts for the Kenya Food Price & Inflation Platform.
+# The pipeline loads these fields into governance.source_catalog.
+sources:
+  - code: wb_rtfp
+    name: Monthly food price estimates by product and market (Kenya)
+    publisher: World Bank, Development Economics Data Group
+    distributor: World Bank Microdata Library
+    source_type: modelled_market_prices
+    role: primary
+    landing_url: https://microdata.worldbank.org/catalog/6167
+    api_url: https://microdata.worldbank.org/api/downloads/KEN_2021_RTFP_v02_M/files?type=data
+    license: Open data (World Bank Microdata Library)
+    license_url: https://microdata.worldbank.org/terms-of-use
+    update_frequency: weekly
+    coverage_start: 2007-01-01
+    coverage_end: 2026-10-01
+    citation: >
+      Andree, B. P. J. (2021). Monthly food price estimates by product and
+      market (Version 2026-10-05). KEN_2021_RTFP_v02_M. Washington, DC: World
+      Bank Microdata Library. https://doi.org/10.48529/2ZH0-JF55
+    retrieval_method: World Bank Microdata downloads API, latest KEN_RTFP_mkt_*.zip
+    notes: >
+      Model-based monthly estimates built from WFP, FAO and selected national
+      statistical office data. Commodity values are modelled close estimates and
+      must be labelled as modelled. The food price index is a Laspeyres index
+      (January 2018 = 1).
+    validation_steps:
+      - Required columns present
+      - Latest version selected and SHA-256 recorded
+      - Modelled close prices are positive
+      - Commodity codes map to canonical products
+      - Market coordinates map to a county
+      - Food price index and YoY values are within plausible bounds
+      - Freshness within 60 days
+
+  - code: wfp_kenya
+    name: Kenya - Food Prices
+    publisher: World Food Programme (WFP)
+    distributor: Humanitarian Data Exchange (HDX)
+    source_type: observed_market_prices
+    role: supporting
+    landing_url: https://data.humdata.org/dataset/wfp-food-prices-for-kenya
+    api_url: https://data.humdata.org/api/3/action/package_show?id=wfp-food-prices-for-kenya
+    license: CC BY-IGO
+    license_url: https://creativecommons.org/licenses/by/3.0/igo/
+    update_frequency: weekly
+    coverage_start: 2006-01-15
+    coverage_end: 2026-09-15
+    citation: >
+      World Food Programme. Kenya - Food Prices. Humanitarian Data Exchange.
+      https://data.humdata.org/dataset/wfp-food-prices-for-kenya
+    retrieval_method: HDX CKAN package_show + CSV download
+    notes: >
+      Observed retail and wholesale prices from WFP market monitoring. The panel
+      is sparse and concentrated in arid and semi-arid markets; it is not a
+      nationally representative sample of all 47 counties.
+    validation_steps:
+      - Required columns present
+      - Price is positive and below the configured ceiling
+      - Unit is convertible to kg, litre or unit
+      - Commodity maps to a canonical product
+      - Market coordinates map to a county
+      - Freshness within 45 days
+
+  - code: cod_ab_ken
+    name: Kenya - Subnational Administrative Boundaries
+    publisher: OCHA
+    distributor: Humanitarian Data Exchange (HDX)
+    source_type: reference_geography
+    role: reference
+    landing_url: https://data.humdata.org/dataset/cod-ab-ken
+    api_url: https://data.humdata.org/api/3/action/package_show?id=cod-ab-ken
+    license: CC BY-IGO
+    license_url: https://creativecommons.org/licenses/by/3.0/igo/
+    update_frequency: annual
+    coverage_start: 2019-10-31
+    coverage_end: 2025-01-28
+    citation: >
+      OCHA. Kenya - Subnational Administrative Boundaries. COD-AB.
+      https://data.humdata.org/dataset/cod-ab-ken
+    retrieval_method: Committed simplified GeoJSON derived from COD-AB admin-1
+    notes: >
+      Admin-1 is the 47-county level. Used only to assign market coordinates to
+      counties and to render a map if one is added.
+    validation_steps:
+      - 47 features present
+      - County codes unique
+      - Polygon geometries valid

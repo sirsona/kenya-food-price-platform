@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS warehouse.fact_price_observation (
     market_key            INTEGER NOT NULL REFERENCES warehouse.dim_market(market_key),
     product_key           INTEGER NOT NULL REFERENCES warehouse.dim_product(product_key),
     source_key            INTEGER NOT NULL REFERENCES warehouse.dim_source(source_key),
+    unit_key              INTEGER NOT NULL REFERENCES warehouse.dim_unit(unit_key),
     price_type            TEXT NOT NULL,
     price_flag            TEXT,
     price_native          NUMERIC(18, 4),
@@ -122,6 +123,8 @@ CREATE INDEX IF NOT EXISTS ix_fact_price_market_product
     ON warehouse.fact_price_observation (market_key, product_key, month);
 CREATE INDEX IF NOT EXISTS ix_fact_price_source
     ON warehouse.fact_price_observation (source_key);
+CREATE INDEX IF NOT EXISTS ix_fact_price_unit
+    ON warehouse.fact_price_observation (unit_key);
 
 CREATE TABLE IF NOT EXISTS warehouse.fact_food_price_index (
     food_index_key        BIGSERIAL PRIMARY KEY,

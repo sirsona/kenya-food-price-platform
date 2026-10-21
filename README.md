@@ -3,8 +3,9 @@
 A batch data platform for tracking food prices in Kenyan markets, detecting
 inflation patterns, and producing county-level evidence.
 
-**Current milestone:** Milestone 1 — source profiling and architecture. The
-pipeline code and dashboard are added in later milestones.
+**Current milestone:** Milestone 1 — source profiling and architecture. This
+milestone contains design only; no pipeline code is included. The pipeline and
+dashboard are added in later milestones.
 
 ## Chosen source
 
@@ -39,6 +40,15 @@ The raw observation columns are mostly empty; the modelled close columns are
 complete for all market-months. Every RTFP price is therefore treated as
 modelled.
 
+## How it works
+
+The source is discovered through the World Bank Microdata API. The latest ZIP is
+selected by date, checksummed, extracted and unpivoted from the modelled close
+prices into a long price table. The food price index is kept in a separate fact
+because it is an index, not a KES price. Units will be converted to kg/L/unit,
+products mapped through a canonical catalogue, and markets mapped to the 47
+counties using OCHA COD-AB geometry.
+
 ## Architecture
 
 Airflow schedules the batch, pandas cleans and normalises the data, and a
@@ -56,6 +66,15 @@ Dimensions: date, county, market, product, product alias, source, unit.
 - `fact_food_price_index`: one row per source × market × month.
 
 The DDL is in [`sql/star_schema.sql`](sql/star_schema.sql).
+
+## How I tested it
+
+- Checked the live World Bank metadata and file: 55,692 rows, 46 columns,
+  234 markets, and the expected 2007-01-01 to 2026-10-01 date range.
+- Validated the schema groups, the three commodity columns and the food price
+  index columns.
+- Ran `sql/star_schema.sql` against a disposable PostgreSQL 16 instance; all
+  nine warehouse tables were created, including the `unit_key` foreign key.
 
 ## Limitations
 
